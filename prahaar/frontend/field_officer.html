@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PRAHAAR Field Officer Tactical App | MHA I4C</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #060913;
+      color: #f8fafc;
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 20px;
+    }
+    .top-bar {
+      background: #0f172a;
+      border-bottom: 1px solid #1e2e4f;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .officer-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge-icon {
+      background: #0284c7;
+      color: white;
+      font-weight: 900;
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+    .officer-name {
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .officer-unit {
+      font-size: 11px;
+      color: #94a3b8;
+      font-family: monospace;
+    }
+    .gps-status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: #4ade80;
+      font-weight: bold;
+    }
+    .container {
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .field-card {
+      background: #0c1222;
+      border: 1px solid #1e2e4f;
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .urgent-flash {
+      border: 2px solid #ef4444;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+      animation: alert-flash 1.5s infinite alternate;
+    }
+    @keyframes alert-flash {
+      from { border-color: #ef4444; }
+      to { border-color: #facc15; }
+    }
+    .btn-field {
+      padding: 14px;
+      border-radius: 8px;
+      border: none;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-nav {
+      background: #0284c7;
+      color: white;
+    }
+    .btn-arrive {
+      background: #f59e0b;
+      color: #000;
+    }
+    .btn-success {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="officer-badge">
+      <div class="badge-icon">POLICE</div>
+      <div>
+        <div class="officer-name">SI Vikram Singh</div>
+        <div class="officer-unit">UNIT: PCR-NUH-01 | NUH CYBER CELL</div>
+      </div>
+    </div>
+    <div class="gps-status">
+      <span style="width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block;"></span>
+      GPS LOCK
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="field-alert-container">
+      <!-- Injected via field_app.js -->
+    </div>
+  </div>
+
+  <script src="/js/field_app.js"></script>
+</body>
+</html>

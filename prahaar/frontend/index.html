@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRAHAAR-AI | SIH26184 - Cybercrime Predictive Analytics & Cashout Interception</title>
+  
+  <!-- Google Fonts & Leaflet & Vis.js -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/vis-network/standalone/umd/vis-network.min.css" />
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Top Tactical Command Header -->
+  <header class="command-header">
+    <div class="logo-group">
+      <div class="logo-badge">PRAHAAR</div>
+      <div class="title-text">
+        <h1>PROJECT PRAHAAR-AI <span style="font-size: 11px; background: rgba(0,242,254,0.1); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 2px 6px; border-radius: 4px;">SIH26184</span></h1>
+        <p>Predictive Analytics Framework for Cybercrime Complaints | Ministry of Home Affairs / I4C</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="live-indicator">
+        <div class="pulse-dot"></div>
+        1930 / NCRP LIVE FEED ACTIVE
+      </div>
+      <button id="btn-simulate-ncrp" class="btn btn-primary">
+        ⚡ INGEST 1930 INCIDENT
+      </button>
+      <a href="/field_officer.html" target="_blank" class="btn">
+        📱 FIELD OFFICER APP
+      </a>
+    </div>
+  </header>
+
+  <!-- Real-Time Metrics Banner -->
+  <div class="stats-banner">
+    <div class="stat-card">
+      <span class="stat-label">Active Cyber Incidents</span>
+      <span id="stat-active-incidents" class="stat-value">--</span>
+      <span class="stat-meta">Streaming from 1930</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Total At-Risk Funds</span>
+      <span id="stat-at-risk-amount" class="stat-value" style="color: #f87171;">--</span>
+      <span class="stat-meta" style="color: #f87171;">Under Siphon Trajectory</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Golden Hour Intercepted</span>
+      <span id="stat-saved-amount" class="stat-value" style="color: #34d399;">--</span>
+      <span class="stat-meta">Prevented ATM Drain</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Avg Predictive Lead Time</span>
+      <span id="stat-avg-etw" class="stat-value" style="color: #38bdf8;">--</span>
+      <span class="stat-meta">Pre-Cashout Lead</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Hotspot Accuracy</span>
+      <span id="stat-accuracy" class="stat-value" style="color: #facc15;">--</span>
+      <span class="stat-meta">Spatial GNN / KDE Model</span>
+    </div>
+  </div>
+
+  <!-- 3-Column Tactical Command Dashboard -->
+  <div class="dashboard-container">
+
+    <!-- Column 1: NCRP 1930 Live Complaint Feed -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">📡 NCRP 1930 Live Stream</span>
+        <span style="font-size: 11px; color: var(--text-muted);">Real-Time Queue</span>
+      </div>
+      <div id="incident-list" class="panel-body">
+        <!-- Injected via app.js -->
+      </div>
+    </div>
+
+    <!-- Column 2: Tactical Center GIS Map & MuleGraph Visualizer -->
+    <div class="panel center-panel">
+      <div class="tab-nav">
+        <button class="tab-btn active" data-tab="map">
+          🗺️ TACTICAL GIS RADAR & HOTSPOTS
+        </button>
+        <button class="tab-btn" data-tab="graph">
+          🕸️ MULEGRAPH™ MULTI-HOP NETWORK
+        </button>
+      </div>
+      <div class="view-content">
+        <div id="map-view" style="width: 100%; height: 100%;">
+          <div id="map"></div>
+        </div>
+        <div id="graph-view" style="width: 100%; height: 100%; display: none;">
+          <div id="mule-network-graph"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 3: Incident Deep-Dive & Predictive Actions -->
+    <div class="panel right-panel">
+      <div class="panel-header">
+        <span class="panel-title">🎯 Predictive Triage & Actions</span>
+        <span id="detail-status" class="risk-pill risk-critical">ACTIVE</span>
+      </div>
+      <div class="panel-body">
+        
+        <!-- Key Metadata -->
+        <div style="background: var(--bg-tertiary); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; font-size: 11px;">
+            <span style="color: var(--text-muted);">Case Ack Number</span>
+            <span id="detail-ack-no" style="font-family: var(--font-mono); color: var(--accent-cyan); font-weight: bold;">--</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 800; margin-top: 4px;">
+            <span>Defrauded Amount:</span>
+            <span id="detail-amount" style="color: #f87171; font-family: var(--font-mono);">--</span>
+          </div>
+          <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">
+            <strong>Victim:</strong> <span id="detail-victim">--</span>
+          </div>
+          <div style="font-size: 11px; color: var(--text-secondary);">
+            <strong>Modus:</strong> <span id="detail-type">--</span>
+          </div>
+          <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">
+            Reported: <span id="detail-reported-at">--</span>
+          </div>
+        </div>
+
+        <!-- AI Forecasted Hotspots -->
+        <div style="margin-bottom: 12px;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">
+            📍 AI Forecasted ATM/CSP Cashout Targets
+          </div>
+          <div id="prediction-list">
+            <!-- Injected via app.js -->
+          </div>
+        </div>
+
+        <!-- Multi-Tier Mule Accounts Table -->
+        <div>
+          <div style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;">
+            ⛓️ Multi-Tier Mule Accounts Trail
+          </div>
+          <table class="mule-table">
+            <thead>
+              <tr>
+                <th>Tier</th>
+                <th>Account / Holder</th>
+                <th>Bank</th>
+                <th style="text-align: right;">Suspect Balance</th>
+              </tr>
+            </thead>
+            <tbody id="mule-nodes-body">
+              <!-- Injected via app.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px;">
+          <button id="btn-dispatch-action" class="btn btn-primary" style="justify-content: center;">
+            ⚡ DISPATCH PCR
+          </button>
+          <button id="btn-generate-freeze" class="btn btn-danger" style="justify-content: center;">
+            📜 FREEZE NOTICE
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal for Legal Debit-Freeze Order -->
+  <div id="freeze-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="font-size: 14px; letter-spacing: 0.5px;">OFFICIAL EMERGENCY DEBIT-FREEZE NOTICE (SEC 106 BNSS / SEC 102 CrPC)</h3>
+        <button id="modal-close-btn" style="background: none; border: none; color: #fff; font-size: 18px; cursor: pointer;">&times;</button>
+      </div>
+      <div id="freeze-notice-content" class="modal-body">
+        <!-- Rendered HTML notice -->
+      </div>
+      <div class="modal-footer">
+        <button onclick="window.print()" class="btn btn-primary" style="background: #0284c7;">🖨️ PRINT / EXPORT PDF</button>
+        <button onclick="document.getElementById('freeze-modal').classList.remove('active')" class="btn" style="background: #e2e8f0; color: #000;">CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <script src="/js/map.js"></script>
+  <script src="/js/graph_view.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
